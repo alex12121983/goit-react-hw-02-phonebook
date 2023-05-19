@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import PropTypes from "prop-types";
 import css from './ContactList.module.css'
 
 class ContactList extends Component {
@@ -41,3 +42,12 @@ class ContactList extends Component {
 }
 
 export default ContactList
+
+ContactList.propTypes = {
+    contacts: PropTypes.arrayOf(
+      PropTypes.exact({
+        contact: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+    filter: PropTypes.string.isRequired,
+  };

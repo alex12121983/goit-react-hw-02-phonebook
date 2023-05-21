@@ -7,25 +7,16 @@ import css from './App.module.css'
 
 class App extends Component {
 	state = {
-		contacts: [
-			// {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-			// {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-			// {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-			// {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-		  ],
+		contacts: [],
 		filter: '',
   	}
-	contactId = () => {
-		return nanoid()
-	};
 	createContact = (data) => {
 		const newContact = {
 			...data,
-			id: this.contactId(),
+			id: nanoid(),
 		}
 		if (this.state.contacts.find(contact => 
-			contact.name === newContact.name
-			|| contact.number === newContact.number)) {
+			contact.name === newContact.name)) {
 			alert(`${newContact.name} is already in contacts.`);
 			return;
 		  }
@@ -33,28 +24,31 @@ class App extends Component {
 			return {contacts: [...prevState.contacts, newContact]}
 		});
 	}
-	searchContact = (evt) => {
+	
+	changeFilter = (evt) => {
 		const { value } = evt.target
         this.setState({
             filter: value,
         })
-		const filterContacts = this.state.contacts.filter(
+	}
+	getVisibleContacts = () => {
+		const { filter, contacts } = this.state;
+		return contacts.filter(
 			contact => {
 				const name = contact.name.toLowerCase(); 
-				const search = this.state.filter.toLowerCase();
+				const search = filter.toLowerCase();
 				return name.includes(search);
 			} 
 		)
-		this.setState({
-            filterContacts: filterContacts,
-        })
-	}
+	  };
 	removeContact = (id) => {
 		this.setState((prev) => ({
 			contacts: prev.contacts.filter((el) => el.id !== id)
 		}))
 	}
 	render(){
+		const { contacts, filter } = this.state;
+		const visibleContacts = this.getVisibleContacts();
 		return (
 				 <div className={css.container}>
   					<h2>Phonebook</h2>
@@ -63,13 +57,13 @@ class App extends Component {
 					/>
   					<h2>Contacts</h2>
   					<Filter
-						filter={this.state.filter}
-						searchContact={this.searchContact}
+						value={filter}
+						onChange={this.changeFilter}
 					/>
   					<ContactList
-						contacts={this.state.contacts}
-						filterContacts={this.state.filterContacts}
-						filter={this.state.filter}
+						contacts={contacts}
+						filterContacts={visibleContacts}
+						filter={filter}
 						removeContact={this.removeContact}
 					/>
 				</div>

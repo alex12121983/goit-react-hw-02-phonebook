@@ -1,5 +1,4 @@
 import { Component } from 'react'
-import PropTypes from "prop-types";
 import css from './Phonebook.module.css'
 
 class Phonebook extends Component {
@@ -80,15 +79,3 @@ class Phonebook extends Component {
 
 export default Phonebook
 
-Phonebook.propTypes = {
-    name: PropTypes.string.isRequired,
-    number: PropTypes.number.isRequired,
-  };
-
-// FeedbackOptions.propTypes = {
-//     options: PropTypes.arrayOf(
-//       PropTypes.exact({
-//         option: PropTypes.string.isRequired,
-//       })
-//     ).isRequired,
-// };
